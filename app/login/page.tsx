@@ -7,9 +7,10 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { auth, signIn } from "../utils/auth";
+import { auth } from "../utils/auth";
 import { SubmitButtons } from "../components/SubmitButtons";
 import { redirect } from "next/navigation";
+import { login } from "../actions/login";
 
 export default async function Login() {
     const session = await auth();
@@ -27,13 +28,7 @@ export default async function Login() {
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <form
-                            className="flex flex-col gap-y-4"
-                            action={async (formData) => {
-                                "use server";
-                                await signIn("nodemailer", formData);
-                            }}
-                        >
+                        <form className="flex flex-col gap-y-4" action={login}>
                             <div className="flex flex-col gap-y-2">
                                 <Label>Email</Label>
                                 <Input
@@ -43,7 +38,8 @@ export default async function Login() {
                                     placeholder="hello@hello.com"
                                 />
                             </div>
-                            <SubmitButtons />
+
+                            <SubmitButtons text="Login" />
                         </form>
                     </CardContent>
                 </Card>
