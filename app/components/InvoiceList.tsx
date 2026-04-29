@@ -55,7 +55,6 @@ export async function InvoiceList() {
                         <TableCell>#{invoice.invoiceNumber}</TableCell>
                         <TableCell>{invoice.clientName}</TableCell>
                         <TableCell>
-                            $
                             {formatCurrency(
                                 invoice.total,
                                 invoice.currency as Currency,
@@ -70,7 +69,7 @@ export async function InvoiceList() {
                             }).format(invoice.createdAt)}
                         </TableCell>
                         <TableCell className="text-right">
-                            <InvoiceActions />
+                            <InvoiceActions id={invoice.id} />
                         </TableCell>
                     </TableRow>
                 ))}
