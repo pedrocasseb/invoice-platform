@@ -27,9 +27,20 @@ import { useForm } from "@conform-to/react";
 import { parseWithZod } from "@conform-to/zod";
 import { invoiceSchema } from "../utils/zodSchemas";
 import { Currency, formatCurrency } from "../utils/format";
-import { fi } from "date-fns/locale";
 
-export default function CreateInvoice() {
+interface iAppProps {
+    firstName: string;
+    lastName: string;
+    email: string;
+    address: string;
+}
+
+export default function CreateInvoice({
+    address,
+    email,
+    firstName,
+    lastName,
+}: iAppProps) {
     const [lastResult, action] = useActionState(createInvoice, undefined);
     const [rate, setRate] = useState("");
     const [quantity, setQuantity] = useState("");
@@ -143,6 +154,7 @@ export default function CreateInvoice() {
                                     placeholder="Your Name"
                                     name={fields.fromName.name}
                                     key={fields.fromName.key}
+                                    defaultValue={`${firstName} ${lastName}`}
                                 />
                                 <p className="text-xs text-red-500">
                                     {fields.fromName.errors}
@@ -151,6 +163,7 @@ export default function CreateInvoice() {
                                     placeholder="Your Email"
                                     name={fields.fromEmail.name}
                                     key={fields.fromEmail.key}
+                                    defaultValue={email}
                                 />
                                 <p className="text-xs text-red-500">
                                     {fields.fromEmail.errors}
@@ -159,6 +172,7 @@ export default function CreateInvoice() {
                                     placeholder="Your Address"
                                     name={fields.fromAddress.name}
                                     key={fields.fromAddress.key}
+                                    defaultValue={address}
                                 />
                                 <p className="text-xs text-red-500">
                                     {fields.fromAddress.errors}
