@@ -6,9 +6,7 @@ import { invoiceSchema } from "../utils/zodSchemas";
 import { prisma } from "../utils/db";
 import { redirect } from "next/navigation";
 import { emailClient } from "../utils/mailtrap";
-import { format } from "path";
 import { Currency, formatCurrency } from "../utils/format";
-import { sub } from "date-fns";
 
 export async function createInvoice(prevState: unknown, formData: FormData) {
     const session = await requireUser();
@@ -21,7 +19,7 @@ export async function createInvoice(prevState: unknown, formData: FormData) {
         return submission.reply();
     }
 
-    const date = await prisma.invoice.create({
+    const data = await prisma.invoice.create({
         data: {
             clientAddress: submission.value.clientAddress,
             clientEmail: submission.value.clientEmail,
@@ -56,7 +54,9 @@ export async function createInvoice(prevState: unknown, formData: FormData) {
         template_variables: {
             ClientName: submission.value.clientName,
             InvoiceNumber: submission.value.invoiceNumber,
-            DueDate: submission.value.dueDate,
+            DueDate: new Intl.DateTimeFormat("en-US", {
+                dateStyle: "long",
+            }).format(new Date(submission.value.date)),
             TotalAmount: formatCurrency(
                 submission.value.total,
                 submission.value.currency as Currency,
