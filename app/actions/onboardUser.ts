@@ -1,9 +1,9 @@
 "use server";
 
-import { requireUser } from "./utils/hooks";
+import { requireUser } from "../utils/hooks";
 import { parseWithZod } from "@conform-to/zod";
-import { onboardingSchema } from "./utils/zodSchemas";
-import { prisma } from "./utils/db";
+import { onboardingSchema } from "../utils/zodSchemas";
+import { prisma } from "../utils/db";
 import { redirect } from "next/navigation";
 
 export async function onboardUser(previousState: any, formData: FormData) {

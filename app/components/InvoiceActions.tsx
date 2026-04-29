@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
     DropdownMenu,
@@ -18,7 +20,7 @@ import Link from "next/link";
 export function InvoiceActions() {
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger>
+            <DropdownMenuTrigger asChild>
                 <Button variant="secondary" size="icon">
                     <MoreHorizontal className="size-4" />
                 </Button>

@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { SubmitButtons } from "../components/SubmitButtons";
 import { useActionState } from "react";
-import { onboardUser } from "../actions";
+import { onboardUser } from "../actions/onboardUser";
 import { useForm } from "@conform-to/react";
 import { parseWithZod } from "@conform-to/zod";
 import { onboardingSchema } from "../utils/zodSchemas";
