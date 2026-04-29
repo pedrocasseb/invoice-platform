@@ -5,6 +5,10 @@ import { requireUser } from "../utils/hooks";
 import { invoiceSchema } from "../utils/zodSchemas";
 import { prisma } from "../utils/db";
 import { redirect } from "next/navigation";
+import { emailClient } from "../utils/mailtrap";
+import { format } from "path";
+import { Currency, formatCurrency } from "../utils/format";
+import { sub } from "date-fns";
 
 export async function createInvoice(prevState: unknown, formData: FormData) {
     const session = await requireUser();
@@ -37,6 +41,27 @@ export async function createInvoice(prevState: unknown, formData: FormData) {
             total: submission.value.total,
             note: submission.value.note,
             userId: session.user?.id,
+        },
+    });
+
+    const sender = {
+        email: "hello@demomailtrap.co",
+        name: "Invoice Next",
+    };
+
+    emailClient.send({
+        from: sender,
+        to: [{ email: "casseb.phcc@gmail.com" }],
+        template_uuid: "ecddc434-8675-4f66-93a3-06d64fd60fbf",
+        template_variables: {
+            ClientName: submission.value.clientName,
+            InvoiceNumber: submission.value.invoiceNumber,
+            DueDate: submission.value.dueDate,
+            TotalAmount: formatCurrency(
+                submission.value.total,
+                submission.value.currency as Currency,
+            ),
+            invoiceLink: "test invoice link",
         },
     });
 
