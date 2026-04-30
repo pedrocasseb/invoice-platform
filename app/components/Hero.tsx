@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import HeroImage from "@/public/hero.png";
+import Image from "next/image";
 
 export function Hero() {
     return (
@@ -10,7 +12,7 @@ export function Hero() {
                 </span>
                 <h1 className="mt-8 text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold tracking-tighter">
                     Invoicing made{" "}
-                    <span className="block -mt-2 bg-linear-to-l from-[#f12711] to-[#f5af19] text-transparent bg-clip-text">
+                    <span className="block -mt-2 bg-linear-to-l from-[#c31432] to-[#240b36] text-transparent bg-clip-text">
                         super easy!
                     </span>
                 </h1>
@@ -25,8 +27,8 @@ export function Hero() {
                 </div>
             </div>
 
-            {/* <div className="relative items-center w-full py-12 mx-auto mt-12"> */}
-            {/* <svg
+            <div className="relative items-center w-full py-12 mx-auto mt-12">
+                <svg
                     className="absolute inset-0 -mt-55 blur-3xl"
                     style={{ zIndex: -1 }}
                     viewBox="0 0 600 600"
@@ -64,9 +66,13 @@ export function Hero() {
                         filter="url(#blur)"
                         opacity="0.7"
                     />
-                </svg> */}
-            {/* image */}
-            {/* </div> */}
+                </svg>
+                <Image
+                    src={HeroImage}
+                    alt="Hero Image"
+                    className="rounded-lg border border-black shadow-2xl"
+                />
+            </div>
         </section>
     );
 }
