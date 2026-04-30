@@ -5,6 +5,8 @@ import { prisma } from "../utils/db";
 import { requireUser } from "../utils/hooks";
 import { invoiceSchema } from "../utils/zodSchemas";
 import { parseWithZod } from "@conform-to/zod";
+import { emailClient } from "../utils/mailtrap";
+import { Currency, formatCurrency } from "../utils/format";
 
 export async function updateInvoice(prevState: unknown, formData: FormData) {
     const session = await requireUser();
@@ -41,6 +43,29 @@ export async function updateInvoice(prevState: unknown, formData: FormData) {
             total: submission.value.total,
             note: submission.value.note,
             userId: session.user?.id,
+        },
+    });
+
+    const sender = {
+        email: "hello@demomailtrap.co",
+        name: "Updated Invoice",
+    };
+
+    emailClient.send({
+        from: sender,
+        to: [{ email: "casseb.phcc@gmail.com" }],
+        template_uuid: "2f103cbf-8cc0-43ba-a027-659cbd14b4c9",
+        template_variables: {
+            ClientName: submission.value.clientName,
+            InvoiceNumber: submission.value.invoiceNumber,
+            DueDate: new Intl.DateTimeFormat("en-US", {
+                dateStyle: "long",
+            }).format(new Date(submission.value.date)),
+            TotalAmount: formatCurrency(
+                submission.value.total,
+                submission.value.currency as Currency,
+            ),
+            invoiceLink: `http://localhost:3000/api/invoice/${data.id}`,
         },
     });
 

@@ -44,7 +44,7 @@ export async function createInvoice(prevState: unknown, formData: FormData) {
 
     const sender = {
         email: "hello@demomailtrap.co",
-        name: "Invoice Next",
+        name: "New Invoice",
     };
 
     emailClient.send({
