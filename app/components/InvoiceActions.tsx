@@ -16,12 +16,29 @@ import {
     Trash,
 } from "lucide-react";
 import Link from "next/link";
+import { toast } from "sonner";
 
 interface iAppProps {
     id: string;
 }
 
 export function InvoiceActions({ id }: iAppProps) {
+    const handleSendReminder = async () => {
+        toast.promise(
+            fetch(`/api/email/${id}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }),
+            {
+                loading: "Sending reminder...",
+                success: "Reminder sent successfully!",
+                error: "Failed to send reminder.",
+            },
+        );
+    };
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -42,11 +59,9 @@ export function InvoiceActions({ id }: iAppProps) {
                         Download
                     </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                    <Link href="">
-                        <Mail className="size-4 mr-2" />
-                        Reminder
-                    </Link>
+                <DropdownMenuItem onClick={handleSendReminder}>
+                    <Mail className="size-4 mr-2" />
+                    Reminder
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                     <Link href="">
