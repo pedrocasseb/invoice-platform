@@ -60,6 +60,10 @@ export function HeaderActions() {
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem asChild>
+                            <Link href="/user/edit">Edit Account</Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem asChild>
                             <form action={logout} className="w-full">
                                 <button
                                     type="submit"
