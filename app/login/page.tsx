@@ -17,6 +17,7 @@ export default async function Login() {
     if (session?.user) redirect("/dashboard");
     return (
         <>
+            <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-size-[16px_16px]"></div>
             <div className="flex h-screen w-full items-center justify-center px-4">
                 <Card className="max-w-sm w-full">
                     <CardHeader>
