@@ -16,17 +16,19 @@ import { Label } from "@/components/ui/label";
 import { updateUser } from "@/app/actions/updateUser";
 import { onboardingSchema } from "@/app/utils/zodSchemas";
 import { SubmitButtons } from "@/app/components/SubmitButtons";
+import { Prisma } from "@prisma/client";
+import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
 
-export default function EditUserRoute({ initialData }: { initialData: any }) {
+interface iAppProps {
+    data: Prisma.UserGetPayload<{}>;
+}
+
+export default function EditUserForm({ data }: iAppProps) {
     const [lastResult, action] = useActionState(updateUser, undefined);
 
     const [form, fields] = useForm({
         lastResult,
-        defaultValue: {
-            firstName: initialData?.firstName ?? "",
-            lastName: initialData?.lastName ?? "",
-            address: initialData?.address ?? "",
-        },
         onValidate({ formData }) {
             return parseWithZod(formData, { schema: onboardingSchema });
         },
@@ -36,7 +38,6 @@ export default function EditUserRoute({ initialData }: { initialData: any }) {
 
     return (
         <div className="flex flex-1 items-center justify-center">
-            <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-size-[16px_16px]"></div>
             <Card className="max-w-sm w-full">
                 <CardHeader>
                     <CardTitle>Edit Account</CardTitle>
@@ -58,42 +59,48 @@ export default function EditUserRoute({ initialData }: { initialData: any }) {
                                 <Input
                                     name={fields.firstName.name}
                                     key={fields.firstName.key}
-                                    defaultValue={
-                                        fields.firstName.initialValue as string
-                                    }
+                                    defaultValue={data.firstName ?? ""}
                                 />
                                 <p className="text-red-500 text-xs">
                                     {fields.firstName.errors}
                                 </p>
                             </div>
+
                             <div className="flex flex-col gap-2">
                                 <Label>Last Name</Label>
                                 <Input
                                     name={fields.lastName.name}
                                     key={fields.lastName.key}
-                                    defaultValue={
-                                        fields.lastName.initialValue as string
-                                    }
+                                    defaultValue={data.lastName ?? ""}
                                 />
                                 <p className="text-red-500 text-xs">
                                     {fields.lastName.errors}
                                 </p>
                             </div>
                         </div>
+
                         <div className="grid gap-2">
                             <Label>Address</Label>
                             <Input
                                 name={fields.address.name}
                                 key={fields.address.key}
-                                defaultValue={
-                                    fields.address.initialValue as string
-                                }
+                                defaultValue={data.address ?? ""}
                             />
                             <p className="text-red-500 text-xs">
                                 {fields.address.errors}
                             </p>
                         </div>
-                        <SubmitButtons text="Save Changes" />
+                        <div className="flex items-center justify-between">
+                            <Link
+                                href="/dashboard"
+                                className={buttonVariants({
+                                    variant: "outline",
+                                })}
+                            >
+                                Back
+                            </Link>
+                            <SubmitButtons text="Save Changes" />
+                        </div>
                     </form>
                 </CardContent>
             </Card>

@@ -60,7 +60,7 @@ export function HeaderActions() {
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem asChild>
-                            <Link href="/user/edit">Edit Account</Link>
+                            <Link href="/dashboard/user">Account</Link>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem asChild>
