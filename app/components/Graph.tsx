@@ -1,0 +1,47 @@
+"use client";
+
+import {
+    ChartContainer,
+    ChartTooltip,
+    ChartTooltipContent,
+} from "@/components/ui/chart";
+import { Line, LineChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
+
+interface iAppProps {
+    data: {
+        date: string;
+        amount: number;
+    }[];
+}
+
+export default function Graph({ data }: iAppProps) {
+    console.log("Dados no gráfico:", data);
+    return (
+        <ChartContainer
+            config={{
+                amount: {
+                    label: "Amount",
+                    color: "black",
+                },
+            }}
+            className="min-h-75 h-full w-full"
+        >
+            <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={data}>
+                    <XAxis dataKey="date" />
+                    <YAxis />
+                    <ChartTooltip
+                        content={<ChartTooltipContent indicator="line" />}
+                    />
+                    <Line
+                        type="monotone"
+                        dataKey="amount"
+                        stroke="var(--color-amount)"
+                        strokeWidth={2}
+                        dot={true}
+                    />
+                </LineChart>
+            </ResponsiveContainer>
+        </ChartContainer>
+    );
+}

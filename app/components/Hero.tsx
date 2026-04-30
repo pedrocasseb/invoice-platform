@@ -10,7 +10,7 @@ export function Hero() {
                 </span>
                 <h1 className="mt-8 text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold tracking-tighter">
                     Invoicing made{" "}
-                    <span className="block -mt-2 bg-linear-to-l from-[#FDC830] to-[#F37335] text-transparent bg-clip-text">
+                    <span className="block -mt-2 bg-linear-to-l from-[#f12711] to-[#f5af19] text-transparent bg-clip-text">
                         super easy!
                     </span>
                 </h1>
