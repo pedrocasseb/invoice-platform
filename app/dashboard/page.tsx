@@ -1,9 +1,11 @@
+import { Suspense } from "react";
 import { DashboardBlocks } from "../components/DashboardBlocks";
 import EmptyState from "../components/EmptyState";
 import { InvoiceGraph } from "../components/InvoiceGraph";
 import { RecentInvoices } from "../components/RecentInvoices";
 import { prisma } from "../utils/db";
 import { requireUser } from "../utils/hooks";
+import { Skeleton } from "@/components/ui/skeleton";
 
 async function getData(userId: string) {
     const data = await prisma.invoice.findMany({
@@ -26,13 +28,15 @@ export default async function DashboardRoute() {
             {data.length < 1 ? (
                 <EmptyState />
             ) : (
-                <>
+                <Suspense
+                    fallback={<Skeleton className="h-full w-full flex-1" />}
+                >
                     <DashboardBlocks />
                     <div className="grid gap-4 lg:grid-cols-3 md:gap-8">
                         <InvoiceGraph />
                         <RecentInvoices />
                     </div>
-                </>
+                </Suspense>
             )}
         </>
     );

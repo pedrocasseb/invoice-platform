@@ -12,6 +12,7 @@ import { requireUser } from "../utils/hooks";
 import { formatCurrency } from "../utils/format";
 import { Currency } from "../utils/format";
 import { Badge } from "@/components/ui/badge";
+import EmptyState from "./EmptyState";
 
 async function getData(userId: string) {
     const data = await prisma.invoice.findMany({
@@ -38,45 +39,53 @@ export async function InvoiceList() {
     const session = await requireUser();
     const data = await getData(session.user?.id as string);
     return (
-        <Table>
-            <TableHeader>
-                <TableRow>
-                    <TableHead>Invoice ID</TableHead>
-                    <TableHead>Customer</TableHead>
-                    <TableHead>Amount</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Date</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-            </TableHeader>
-            <TableBody>
-                {data.map((invoice) => (
-                    <TableRow key={invoice.id}>
-                        <TableCell>#{invoice.invoiceNumber}</TableCell>
-                        <TableCell>{invoice.clientName}</TableCell>
-                        <TableCell>
-                            {formatCurrency(
-                                invoice.total,
-                                invoice.currency as Currency,
-                            )}
-                        </TableCell>
-                        <TableCell>
-                            <Badge>{invoice.status}</Badge>
-                        </TableCell>
-                        <TableCell>
-                            {new Intl.DateTimeFormat("en-US", {
-                                dateStyle: "medium",
-                            }).format(invoice.createdAt)}
-                        </TableCell>
-                        <TableCell className="text-right">
-                            <InvoiceActions
-                                status={invoice.status}
-                                id={invoice.id}
-                            />
-                        </TableCell>
-                    </TableRow>
-                ))}
-            </TableBody>
-        </Table>
+        <>
+            {data.length === 0 ? (
+                <EmptyState />
+            ) : (
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead>Invoice ID</TableHead>
+                            <TableHead>Customer</TableHead>
+                            <TableHead>Amount</TableHead>
+                            <TableHead>Status</TableHead>
+                            <TableHead>Date</TableHead>
+                            <TableHead className="text-right">
+                                Actions
+                            </TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {data.map((invoice) => (
+                            <TableRow key={invoice.id}>
+                                <TableCell>#{invoice.invoiceNumber}</TableCell>
+                                <TableCell>{invoice.clientName}</TableCell>
+                                <TableCell>
+                                    {formatCurrency(
+                                        invoice.total,
+                                        invoice.currency as Currency,
+                                    )}
+                                </TableCell>
+                                <TableCell>
+                                    <Badge>{invoice.status}</Badge>
+                                </TableCell>
+                                <TableCell>
+                                    {new Intl.DateTimeFormat("en-US", {
+                                        dateStyle: "medium",
+                                    }).format(invoice.createdAt)}
+                                </TableCell>
+                                <TableCell className="text-right">
+                                    <InvoiceActions
+                                        status={invoice.status}
+                                        id={invoice.id}
+                                    />
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            )}
+        </>
     );
 }
